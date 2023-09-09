@@ -15,10 +15,10 @@ similarity = pickle.load(open('similarity.pkl', 'rb'))
 # kaggel dataset: https://www.kaggle.com/datasets/tmdb/tmdb-movie-metadata?resource=download&select=tmdb_5000_movies.csv
 
 
-def recommend(selected_movie):
+def recommend(selected_movie, num_recommendations):
     movie_index = movies[movies['title'] == selected_movie].index[0]
     distances = similarity[movie_index]
-    movies_list = sorted(list(enumerate(distances)), reverse=True, key=lambda x:x[1])[1:6]
+    movies_list = sorted(list(enumerate(distances)), reverse=True, key=lambda x:x[1])[0:num_recommendations]
 
     recommended_movies, posters = [], []
     for i in movies_list:
@@ -45,24 +45,23 @@ selected_movie_name = st.selectbox(
     movies['title'].values
 )
 
-if st.button('Recommend'):
-    movie, posters = recommend(selected_movie_name)
-    # for movie in recommendations:
-    #     st.write(movie)
+num_recommendations = st.slider('Select the number of recommendations to display', 1, 20)
 
-    col1, col2, col3, col4, col5 = st.columns(5)
-    with col1:
-        st.text(movie[0])
-        st.image(posters[0])
-    with col2:
-        st.text(movie[1])
-        st.image(posters[1])
-    with col3:
-        st.text(movie[2])
-        st.image(posters[2])
-    with col4:
-        st.text(movie[3])
-        st.image(posters[3])
-    with col5:
-        st.text(movie[4])
-        st.image(posters[4])
+if st.button('Recommend'):
+    movie, posters = recommend(selected_movie_name,num_recommendations)
+
+    # Limit the number of recommendations based on user's selection
+    num_recommendations = min(len(movie), num_recommendations)
+
+    # Determine the number of rows required based on num_recommendations and max 3 columns per row
+    num_rows = (num_recommendations - 1) // 3 + 1
+
+    for row in range(num_rows):
+        cols = st.columns(3)  # Create 3 columns for each row
+
+        for col in range(3):
+            index = row * 3 + col
+            if index < num_recommendations:
+                with cols[col]:
+                    st.text(movie[index])
+                    st.image(posters[index])
