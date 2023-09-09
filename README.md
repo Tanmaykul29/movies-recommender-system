@@ -1,9 +1,9 @@
-# movies-recommender-system
-**Movie Recommender System using Streamlit and TMDB Dataset**
+# Movie Recommender System using Streamlit and TMDB Dataset**
 
 # Introduction
 
 This project implements a Movie Recommender System using Streamlit, a Python library for creating web applications, and the TMDB (The Movie Database) dataset from Kaggle. The system recommends movies to users based on their selected movie preferences. The recommendation algorithm employs collaborative filtering to find similar movies and provide personalized movie suggestions to users.
+kaggel dataset: https://www.kaggle.com/datasets/tmdb/tmdb-movie-metadata?resource=download&select=tmdb_5000_movies.csv
 
 # Overview
 
